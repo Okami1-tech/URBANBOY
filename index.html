@@ -1,1520 +1,914 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>URBANBOY — Luxury Nigerian Streetwear</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    /* ===========================
-       CSS VARIABLES & RESET
-    =========================== */
-    :root {
-      --bg: #0A0A0A;
-      --text: #F0EDE8;
-      --gold: #C0272D;
-      --gold-dim: rgba(192,39,45,0.15);
-      --charcoal: #1A1A1A;
-      --muted: #888880;
-      --border: rgba(240,237,232,0.08);
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>URBANBOY — Luxury Streetwear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#080808;
+  --surface:#111111;
+  --card:#141414;
+  --text:#EDEAE4;
+  --muted:#6B6862;
+  --dim:#2E2C2A;
+  --red:#C0272D;
+  --red-dark:#961f24;
+  --border:rgba(237,234,228,.07);
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none}
+img{display:block;max-width:100%}
+button{font-family:inherit;cursor:none}
+a{text-decoration:none;cursor:none}
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* SCROLLBAR */
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
 
-    html { scroll-behavior: smooth; }
+/* GRAIN — static SVG, no animation, performant */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
+  opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      overflow-x: hidden;
-      cursor: none;
-    }
+/* CURSOR */
+#cur{
+  position:fixed;top:0;left:0;
+  width:10px;height:10px;
+  background:var(--red);border-radius:50%;
+  pointer-events:none;z-index:99999;
+  transform:translate(-50%,-50%);
+  transition:width .18s var(--ease),height .18s var(--ease),background .18s var(--ease);
+  will-change:left,top;
+}
+#cur.hov{width:36px;height:36px;background:transparent;border:1.5px solid var(--red)}
 
-    /* ===========================
-       SCROLLBAR
-    =========================== */
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: #C0272D; border-radius: 2px; }
+/* ─── NAVBAR ─── */
+.nav{
+  position:fixed;top:0;left:0;right:0;height:72px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 52px;z-index:1000;
+  transition:background .5s var(--ease),border-color .5s;
+  border-bottom:1px solid transparent;
+}
+.nav.solid{background:rgba(8,8,8,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-color:var(--border)}
+.nav-logo img{height:40px;object-fit:contain}
+.nav-links{
+  position:absolute;left:50%;transform:translateX(-50%);
+  display:flex;gap:44px;list-style:none;
+}
+.nav-links a{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:12px;letter-spacing:3.5px;
+  color:rgba(237,234,228,.7);transition:color .2s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-6px;left:0;right:0;height:1px;
+  background:var(--red);transform:scaleX(0);transform-origin:left;
+  transition:transform .3s var(--ease);
+}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-right{display:flex;align-items:center;gap:6px}
+.nav-cart{position:relative;background:none;border:none;color:var(--text);padding:10px;transition:color .2s}
+.nav-cart:hover{color:var(--red)}
+.nav-cart svg{width:20px;height:20px;display:block;stroke-width:1.5}
+.cart-dot{position:absolute;top:9px;right:9px;width:7px;height:7px;background:var(--red);border-radius:50%;display:none}
+.cart-dot.on{display:block}
+.hbg{display:none;flex-direction:column;gap:6px;background:none;border:none;padding:10px}
+.hbg span{display:block;width:22px;height:1px;background:var(--text);transition:transform .3s var(--ease),opacity .3s}
+.hbg.on span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hbg.on span:nth-child(2){opacity:0}
+.hbg.on span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 
-    /* ===========================
-       CUSTOM CURSOR
-    =========================== */
-    #cursor {
-      width: 12px;
-      height: 12px;
-      background: var(--gold);
-      border-radius: 50%;
-      position: fixed;
-      top: 0; left: 0;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: transform 0.12s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
-    }
-    #cursor.expand {
-      width: 32px;
-      height: 32px;
-      background: transparent;
-      border: 1px solid var(--gold);
-      opacity: 0.6;
-    }
+/* Mobile nav */
+.mob-nav{
+  position:fixed;inset:0;background:var(--bg);z-index:999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  opacity:0;pointer-events:none;transition:opacity .35s var(--ease);
+}
+.mob-nav.on{opacity:1;pointer-events:all}
+.mob-nav a{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(40px,8vw,64px);letter-spacing:4px;
+  color:var(--text);transition:color .2s;padding:12px;
+}
+.mob-nav a:hover{color:var(--red)}
+.mob-div{width:1px;height:40px;background:var(--dim);margin:4px 0}
 
-    /* ===========================
-       GRAIN TEXTURE OVERLAY
-    =========================== */
-    .grain {
-      position: fixed;
-      inset: -200%;
-      width: 400%;
-      height: 400%;
-      pointer-events: none;
-      z-index: 1;
-      opacity: 0.035;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      animation: grain 0.8s steps(1) infinite;
-    }
-    @keyframes grain {
-      0%   { transform: translate(0,0); }
-      10%  { transform: translate(-5%,-10%); }
-      20%  { transform: translate(-15%,5%); }
-      30%  { transform: translate(7%,-25%); }
-      40%  { transform: translate(-5%,25%); }
-      50%  { transform: translate(-15%,10%); }
-      60%  { transform: translate(15%,0%); }
-      70%  { transform: translate(0%,15%); }
-      80%  { transform: translate(3%,35%); }
-      90%  { transform: translate(-10%,10%); }
-      100% { transform: translate(0,0); }
-    }
+/* ─── HERO — full viewport, product3 as backdrop ─── */
+.hero{
+  position:relative;height:100svh;min-height:640px;
+  display:flex;align-items:flex-end;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:url('https://okami1-tech.github.io/URBANBOY/product3.jpg') center 15%/cover no-repeat;
+  transform:scale(1.05);
+  transition:transform 9s ease;
+  will-change:transform;
+}
+.hero-bg.zoomed{transform:scale(1)}
+.hero-veil{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(to top,rgba(8,8,8,1) 0%,rgba(8,8,8,.72) 30%,rgba(8,8,8,.2) 60%,rgba(8,8,8,.05) 100%),
+    linear-gradient(to right,rgba(8,8,8,.55) 0%,transparent 55%);
+}
+.hero-content{
+  position:relative;z-index:2;
+  padding:0 52px 80px;max-width:820px;
+}
+.hero-eyebrow{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:11px;letter-spacing:5px;color:var(--red);
+  margin-bottom:20px;
+  opacity:0;transform:translateY(14px);
+  animation:up .8s var(--ease) .25s forwards;
+}
+.hero-h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(68px,10.5vw,152px);
+  line-height:.86;letter-spacing:1.5px;
+  margin-bottom:30px;
+}
+.h1-solid{
+  display:block;color:var(--text);
+  opacity:0;transform:translateY(24px);
+  animation:up .9s var(--ease) .44s forwards;
+}
+.h1-stroke{
+  display:block;color:transparent;
+  -webkit-text-stroke:1.5px rgba(237,234,228,.9);
+  opacity:0;transform:translateY(24px);
+  animation:up .9s var(--ease) .58s forwards;
+}
+.hero-sub{
+  font-size:14px;color:rgba(237,234,228,.5);letter-spacing:.5px;
+  line-height:1.7;max-width:400px;margin-bottom:44px;
+  opacity:0;transform:translateY(14px);
+  animation:up .8s var(--ease) .78s forwards;
+}
+.hero-ctas{
+  display:flex;gap:14px;flex-wrap:wrap;
+  opacity:0;transform:translateY(14px);
+  animation:up .8s var(--ease) .92s forwards;
+}
+.btn-primary{
+  font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;
+  background:var(--red);color:#fff;border:none;padding:16px 40px;
+  position:relative;overflow:hidden;transition:background .25s,transform .2s;
+}
+.btn-primary:hover{background:var(--red-dark);transform:translateY(-2px)}
+.btn-outline{
+  font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;
+  background:transparent;color:var(--text);
+  border:1px solid rgba(237,234,228,.28);padding:16px 40px;
+  transition:border-color .25s,color .25s,transform .2s;
+}
+.btn-outline:hover{border-color:rgba(237,234,228,.7);transform:translateY(-2px)}
 
-    /* ===========================
-       NAVBAR
-    =========================== */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 48px;
-      height: 72px;
-      background: transparent;
-      transition: background 0.4s ease, backdrop-filter 0.4s ease;
-    }
-    nav.scrolled {
-      background: rgba(10,10,10,0.95);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-    .nav-logo img {
-      height: 44px;
-      object-fit: contain;
-    }
-    .nav-links {
-      display: flex;
-      gap: 40px;
-      list-style: none;
-    }
-    .nav-links a {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 13px;
-      letter-spacing: 3px;
-      color: var(--text);
-      text-decoration: none;
-      position: relative;
-      transition: color 0.25s;
-    }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; left: 0; right: 0;
-      height: 1px;
-      background: var(--gold);
-      transform: scaleX(0);
-      transition: transform 0.25s ease;
-    }
-    .nav-links a:hover { color: var(--gold); }
-    .nav-links a:hover::after { transform: scaleX(1); }
+/* scroll cue — bottom right corner */
+.scroll-cue{
+  position:absolute;bottom:36px;right:52px;z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  opacity:0;animation:up 1s ease 1.4s forwards;
+}
+.scroll-cue-lbl{font-size:9px;letter-spacing:4px;color:var(--muted);writing-mode:vertical-rl}
+.scroll-cue-line{
+  width:1px;height:52px;
+  background:linear-gradient(to bottom,var(--red),transparent);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes up{to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.3;transform:scaleY(.5)}}
 
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .cart-btn {
-      position: relative;
-      background: none;
-      border: none;
-      cursor: none;
-      padding: 8px;
-      color: var(--text);
-      transition: color 0.2s;
-    }
-    .cart-btn:hover { color: var(--gold); }
-    .cart-btn svg { width: 22px; height: 22px; display: block; }
-    .cart-badge {
-      position: absolute;
-      top: 2px; right: 2px;
-      width: 10px; height: 10px;
-      background: var(--gold);
-      border-radius: 50%;
-      font-size: 0;
-      display: none;
-    }
-    .cart-badge.visible { display: block; }
+/* ─── TICKER ─── */
+.ticker{
+  background:var(--surface);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  overflow:hidden;padding:15px 0;
+}
+.ticker-track{display:flex;white-space:nowrap;animation:tick 28s linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker-text{
+  font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3.5px;
+  color:var(--red);flex-shrink:0;
+}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-    /* Hamburger */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: none;
-      padding: 8px;
-    }
-    .hamburger span {
-      display: block;
-      width: 24px; height: 1.5px;
-      background: var(--text);
-      transition: all 0.3s ease;
-    }
-    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+/* ─── SECTION SHELL ─── */
+.sec{padding:110px 52px}
+.sec-head{display:flex;align-items:flex-end;gap:20px;margin-bottom:12px}
+.sec-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(48px,5.5vw,78px);
+  letter-spacing:1.5px;line-height:1;
+}
+.sec-num{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:14px;color:var(--red);
+  letter-spacing:1px;margin-bottom:8px;
+}
+.red-bar{width:48px;height:2px;background:var(--red);margin-bottom:10px}
+.sec-sub{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:18px;color:var(--muted);margin-bottom:64px;letter-spacing:.3px;
+}
 
-    /* Mobile nav overlay */
-    .mobile-nav {
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      z-index: 999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 32px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.35s ease;
-    }
-    .mobile-nav.open { opacity: 1; pointer-events: all; }
-    .mobile-nav a {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 48px;
-      letter-spacing: 4px;
-      color: var(--text);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .mobile-nav a:hover { color: var(--gold); }
+/* ─── PRODUCT CARD ─── */
+.pcard{position:relative;background:var(--card);overflow:hidden;display:flex;flex-direction:column}
+.pcard-img{position:relative;overflow:hidden;flex-shrink:0}
+.pcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease);will-change:transform}
+.pcard:hover .pcard-img img{transform:scale(1.07)}
+.pcard-ov{
+  position:absolute;inset:0;background:rgba(8,8,8,.52);
+  opacity:0;display:flex;align-items:center;justify-content:center;
+  transition:opacity .35s var(--ease);
+}
+.pcard:hover .pcard-ov{opacity:1}
+.qa-btn{
+  font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:3.5px;
+  background:var(--red);color:#fff;border:none;padding:13px 32px;
+  transform:translateY(14px);opacity:0;
+  transition:transform .35s var(--ease),opacity .35s var(--ease);
+  position:relative;overflow:hidden;
+}
+.pcard:hover .qa-btn{transform:translateY(0);opacity:1}
+.lim-badge{
+  position:absolute;top:16px;left:16px;z-index:2;
+  background:var(--red);color:#fff;
+  font-family:'Bebas Neue',sans-serif;font-size:9px;letter-spacing:2.5px;padding:5px 10px;
+}
+.pcard-body{padding:20px 22px 26px;flex:1;display:flex;flex-direction:column}
+.pcard-name{font-size:14px;font-weight:500;letter-spacing:.3px;margin-bottom:4px}
+.pcard-desc{font-size:12px;color:var(--muted);margin-bottom:auto;padding-bottom:14px;line-height:1.5}
+.pcard-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:14px}
+.pcard-price{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--red)}
+.pcard-add{
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  background:none;border:none;color:rgba(237,234,228,.4);
+  border-bottom:1px solid rgba(237,234,228,.12);padding:0 0 2px;
+  transition:color .2s,border-color .2s;
+}
+.pcard-add:hover{color:var(--text);border-color:rgba(237,234,228,.45)}
 
-    /* ===========================
-       HERO
-    =========================== */
-    .hero {
-      position: relative;
-      height: 100vh;
-      min-height: 600px;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-      padding: 0 48px;
-    }
-    .hero-left {
-      width: 58%;
-      z-index: 2;
-      padding-right: 40px;
-    }
-    .hero-label {
-      font-size: 11px;
-      letter-spacing: 4px;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 24px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.8s ease 0.2s forwards;
-    }
-    .hero-h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(64px, 9vw, 128px);
-      line-height: 0.88;
-      letter-spacing: 2px;
-      margin-bottom: 0;
-    }
-    .hero-h1.solid {
-      color: var(--text);
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeUp 0.8s ease 0.4s forwards;
-    }
-    .hero-h1.outlined {
-      color: transparent;
-      -webkit-text-stroke: 1.5px var(--text);
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeUp 0.8s ease 0.55s forwards;
-      margin-bottom: 32px;
-    }
-    .hero-body {
-      font-size: 15px;
-      color: var(--muted);
-      line-height: 1.6;
-      max-width: 380px;
-      margin-bottom: 40px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.8s ease 0.75s forwards;
-    }
-    .hero-ctas {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.8s ease 0.9s forwards;
-    }
-    .btn-gold {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 14px;
-      letter-spacing: 3px;
-      background: var(--gold);
-      color: #0A0A0A;
-      border: none;
-      padding: 16px 36px;
-      cursor: none;
-      transition: background 0.25s, transform 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-    .btn-gold:hover { background: #d42e35; transform: translateY(-2px); }
-    .btn-ghost {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 14px;
-      letter-spacing: 3px;
-      background: transparent;
-      color: var(--text);
-      border: 1px solid rgba(240,237,232,0.4);
-      padding: 16px 36px;
-      cursor: none;
-      transition: border-color 0.25s, color 0.25s, transform 0.2s;
-    }
-    .btn-ghost:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-      transform: translateY(-2px);
-    }
+/* ─── DROP GRID ─── */
+#drop{background:var(--bg)}
+.drop-grid{
+  display:grid;
+  grid-template-columns:1.35fr 1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:14px;
+}
+/* col1, rows 1+2 */
+.dc-hero{grid-column:1;grid-row:1/3}
+.dc-hero .pcard-img{height:580px}
+/* col2, row1 */
+.dc-tr{grid-column:2;grid-row:1}
+.dc-tr .pcard-img{height:274px}
+/* col3, row1 */
+.dc-tfr{grid-column:3;grid-row:1}
+.dc-tfr .pcard-img{height:274px}
+/* col2+3, row2 — horizontal card */
+.dc-br{grid-column:2/4;grid-row:2;flex-direction:row!important}
+.dc-br .pcard-img{width:38%;flex-shrink:0;height:auto;min-height:200px}
+.dc-br .pcard-body{justify-content:center}
 
-    /* Hero images */
-    .hero-right {
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 44%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-      opacity: 0;
-      animation: fadeIn 1s ease 0.6s forwards;
-    }
-    .hero-img-stack {
-      position: relative;
-      width: 340px;
-      height: 500px;
-    }
-    .hero-img-stack img {
-      position: absolute;
-      object-fit: cover;
-      border: none;
-    }
-    .hero-img-1 {
-      width: 260px;
-      height: 380px;
-      top: 20px; left: 0;
-      transform: rotate(-3deg);
-      z-index: 2;
-      filter: brightness(0.9);
-    }
-    .hero-img-2 {
-      width: 220px;
-      height: 320px;
-      bottom: 0; right: 0;
-      transform: rotate(4deg);
-      z-index: 3;
-      filter: brightness(0.85);
-    }
-    .hero-img-badge {
-      position: absolute;
-      top: 0; right: 30px;
-      background: var(--gold);
-      color: #0A0A0A;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 10px;
-      letter-spacing: 2px;
-      padding: 6px 10px;
-      z-index: 4;
-    }
+/* ─── ALL PIECES ─── */
+#catalog{background:var(--surface)}
+.pieces-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pieces-grid .pcard-img{height:380px}
 
-    /* Scroll indicator */
-    .scroll-indicator {
-      position: absolute;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      z-index: 10;
-      opacity: 0;
-      animation: fadeIn 1s ease 1.2s forwards;
-    }
-    .scroll-indicator span {
-      font-size: 10px;
-      letter-spacing: 3px;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-    .scroll-arrow {
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--gold), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-    @keyframes scrollPulse {
-      0%, 100% { opacity: 1; transform: translateY(0); }
-      50% { opacity: 0.3; transform: translateY(8px); }
-    }
+/* ─── MANIFESTO ─── */
+#manifesto{padding:0;display:grid;grid-template-columns:1fr 1fr}
+.man-l{
+  padding:110px 64px 110px 52px;background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.man-quote{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(50px,6vw,86px);
+  line-height:.88;letter-spacing:2px;
+  color:transparent;-webkit-text-stroke:1.5px rgba(237,234,228,.82);
+  margin-bottom:36px;
+}
+.man-accent{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--red);letter-spacing:.5px}
+.man-r{
+  padding:110px 52px 110px 64px;background:var(--bg);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.man-body{
+  font-family:'Cormorant Garamond',serif;font-size:19px;
+  line-height:1.78;color:rgba(237,234,228,.68);margin-bottom:52px;
+}
+.man-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);padding-top:36px}
+.m-stat{padding:0 24px 0 0}
+.m-stat:not(:first-child){padding-left:24px;border-left:1px solid var(--border)}
+.m-stat-val{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:1px;color:var(--red);display:block;margin-bottom:6px}
+.m-stat-lbl{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted)}
 
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
+/* ─── TESTIMONIALS ─── */
+#testimonials{background:var(--surface)}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:64px}
+.tcard{
+  background:var(--card);border:1px solid var(--border);
+  padding:40px 36px 36px;position:relative;overflow:hidden;
+  transition:border-color .3s var(--ease);
+}
+.tcard::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--red);transform:scaleX(0);transform-origin:left;
+  transition:transform .4s var(--ease);
+}
+.tcard:hover{border-color:rgba(192,39,45,.3)}
+.tcard:hover::before{transform:scaleX(1)}
+.tcard-qm{font-family:'Cormorant Garamond',serif;font-size:72px;line-height:.8;color:var(--red);opacity:.32;margin-bottom:20px;display:block}
+.tcard-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;line-height:1.7;color:rgba(237,234,228,.8);margin-bottom:28px}
+.tcard-by{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--red)}
 
-    /* ===========================
-       MARQUEE
-    =========================== */
-    .marquee-section {
-      background: var(--charcoal);
-      overflow: hidden;
-      padding: 16px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .marquee-track {
-      display: flex;
-      gap: 0;
-      white-space: nowrap;
-      animation: marqueeScroll 30s linear infinite;
-    }
-    .marquee-section:hover .marquee-track { animation-play-state: paused; }
-    .marquee-text {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 14px;
-      letter-spacing: 3px;
-      color: var(--gold);
-      padding-right: 0;
-      flex-shrink: 0;
-    }
-    @keyframes marqueeScroll {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
-    }
+/* ─── FOOTER ─── */
+footer{background:var(--bg);border-top:1px solid var(--border)}
+.footer-top{
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;padding:56px 52px 48px;
+  border-bottom:1px solid var(--border);
+}
+.f-logo img{height:36px;object-fit:contain}
+.f-wordmark{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:8px;text-align:center}
+.f-socials{display:flex;justify-content:flex-end;align-items:center;gap:22px}
+.f-socials a{color:var(--muted);transition:color .2s}
+.f-socials a:hover{color:var(--red)}
+.f-socials svg{width:18px;height:18px;display:block}
+.footer-mid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;padding:52px;border-bottom:1px solid var(--border)}
+.fc-title{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3.5px;margin-bottom:22px}
+.fc ul{list-style:none}
+.fc ul li{margin-bottom:12px}
+.fc ul li a{font-size:13px;color:var(--muted);transition:color .2s;letter-spacing:.3px}
+.fc ul li a:hover{color:var(--red)}
+.fc-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--muted);line-height:1.65;margin-bottom:12px}
+.fc-handle{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--red)}
+.footer-bot{display:flex;justify-content:space-between;align-items:center;padding:20px 52px}
+.f-copy,.f-made{font-size:11px;color:var(--muted);letter-spacing:.5px}
 
-    /* ===========================
-       SECTION COMMONS
-    =========================== */
-    section { padding: 100px 48px; }
-    .section-heading {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(52px, 6vw, 80px);
-      letter-spacing: 2px;
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-    .gold-rule {
-      width: 80px;
-      height: 2px;
-      background: var(--gold);
-      margin: 16px 0 12px;
-    }
-    .section-sub {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 18px;
-      color: var(--muted);
-      margin-bottom: 60px;
-    }
+/* ─── CART ─── */
+.cart-mask{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);
+  z-index:1100;opacity:0;pointer-events:none;transition:opacity .38s var(--ease);
+}
+.cart-mask.on{opacity:1;pointer-events:all}
+.cart{
+  position:fixed;top:0;right:0;width:400px;max-width:100vw;height:100%;
+  background:var(--surface);z-index:1200;
+  display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .42s var(--ease);
+  border-left:1px solid var(--border);
+}
+.cart.on{transform:translateX(0)}
+.cart-hd{display:flex;justify-content:space-between;align-items:center;padding:28px 28px 22px;border-bottom:1px solid var(--border)}
+.cart-hd-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:4px}
+.cart-x{background:none;border:none;color:var(--muted);font-size:18px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;transition:color .2s}
+.cart-x:hover{color:var(--red)}
+.cart-list{flex:1;overflow-y:auto;padding:8px 28px}
+.cart-empty{text-align:center;padding:80px 20px;color:var(--muted)}
+.cart-empty p{font-size:13px;margin-top:12px;letter-spacing:.5px}
+.citem{display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--border)}
+.citem img{width:76px;height:92px;object-fit:cover;flex-shrink:0}
+.citem-info{flex:1;min-width:0}
+.citem-name{font-size:13px;font-weight:500;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.citem-price{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--red);letter-spacing:1px;margin-bottom:14px}
+.citem-ctrl{display:flex;align-items:center;gap:10px}
+.qty-btn{
+  width:28px;height:28px;background:var(--card);border:1px solid var(--border);
+  color:var(--text);font-size:16px;display:flex;align-items:center;justify-content:center;
+  transition:background .2s,border-color .2s;
+}
+.qty-btn:hover{background:var(--red);border-color:var(--red)}
+.qty-n{font-size:13px;min-width:18px;text-align:center}
+.rm-btn{background:none;border:none;color:var(--dim);font-size:10px;letter-spacing:2px;margin-left:auto;transition:color .2s}
+.rm-btn:hover{color:#c0392b}
+.cart-ft{padding:22px 28px 32px;border-top:1px solid var(--border)}
+.cart-sub{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.cart-sub-lbl{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.cart-sub-val{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--red);letter-spacing:1px}
+.ckout-btn{
+  display:block;width:100%;
+  font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3.5px;
+  background:var(--red);color:#fff;border:none;padding:19px;
+  position:relative;overflow:hidden;transition:background .25s;
+}
+.ckout-btn:hover{background:var(--red-dark)}
 
-    /* ===========================
-       PRODUCT CARDS
-    =========================== */
-    .product-card {
-      position: relative;
-      background: var(--charcoal);
-      overflow: hidden;
-      cursor: none;
-    }
-    .product-img-wrap {
-      position: relative;
-      overflow: hidden;
-    }
-    .product-img-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.6s ease;
-    }
-    .product-card:hover .product-img-wrap img { transform: scale(1.08); }
-    .product-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(10,10,10,0.55);
-      opacity: 0;
-      transition: opacity 0.35s ease;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      padding-bottom: 24px;
-    }
-    .product-card:hover .product-overlay { opacity: 1; }
-    .quick-add {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 13px;
-      letter-spacing: 3px;
-      background: var(--gold);
-      color: #0A0A0A;
-      border: none;
-      padding: 12px 28px;
-      cursor: none;
-      transform: translateY(20px);
-      opacity: 0;
-      transition: transform 0.35s ease, opacity 0.35s ease;
-    }
-    .product-card:hover .quick-add {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    .limited-badge {
-      position: absolute;
-      top: 16px; left: 16px;
-      background: var(--gold);
-      color: #0A0A0A;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 10px;
-      letter-spacing: 2px;
-      padding: 5px 10px;
-      z-index: 3;
-    }
-    .product-info {
-      padding: 20px 20px 24px;
-    }
-    .product-name {
-      font-weight: 500;
-      font-size: 15px;
-      margin-bottom: 4px;
-    }
-    .product-desc {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 12px;
-      line-height: 1.4;
-    }
-    .product-price {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      color: var(--gold);
-      letter-spacing: 1px;
-      display: block;
-      margin-bottom: 12px;
-    }
-    .add-to-cart-link {
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--text);
-      background: none;
-      border: none;
-      border-bottom: 1px solid rgba(240,237,232,0.25);
-      padding: 0 0 2px;
-      cursor: none;
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .add-to-cart-link:hover { color: var(--gold); border-color: var(--gold); }
+/* RIPPLE */
+.ripple{
+  position:absolute;border-radius:50%;
+  background:rgba(255,255,255,.22);
+  pointer-events:none;
+  animation:rpl .65s linear forwards;
+}
+@keyframes rpl{from{transform:scale(0);opacity:1}to{transform:scale(5);opacity:0}}
 
-    /* ===========================
-       THE DROP — ASYMMETRIC GRID
-    =========================== */
-    #drop { padding-bottom: 80px; }
-    .drop-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: 300px 260px;
-      gap: 16px;
-    }
-    .drop-card-large {
-      grid-column: 1;
-      grid-row: 1 / 3;
-    }
-    .drop-card-large .product-img-wrap { height: calc(100% - 105px); }
-    .drop-card-med { grid-column: 2; grid-row: 1; }
-    .drop-card-med .product-img-wrap { height: 195px; }
-    .drop-card-med2 { grid-column: 3; grid-row: 1; }
-    .drop-card-med2 .product-img-wrap { height: 195px; }
-    .drop-card-wide {
-      grid-column: 2 / 4;
-      grid-row: 2;
-      display: flex;
-      flex-direction: row;
-    }
-    .drop-card-wide .product-img-wrap {
-      width: 40%;
-      min-width: 40%;
-      height: 100%;
-    }
-    .drop-card-wide .product-info {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    /* ===========================
-       ALL PIECES GRID
-    =========================== */
-    #catalog .pieces-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-    #catalog .product-img-wrap { height: 340px; }
-
-    /* ===========================
-       MANIFESTO
-    =========================== */
-    .manifesto {
-      background: var(--charcoal);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      align-items: center;
-      padding: 100px 0;
-    }
-    .manifesto-left {
-      padding: 60px 48px 60px 80px;
-      border-right: 1px solid var(--border);
-    }
-    .manifesto-quote {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(48px, 6vw, 80px);
-      line-height: 0.9;
-      color: transparent;
-      -webkit-text-stroke: 1.5px var(--text);
-      letter-spacing: 2px;
-    }
-    .manifesto-right {
-      padding: 60px 80px 60px 64px;
-    }
-    .manifesto-right p {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 20px;
-      line-height: 1.7;
-      color: rgba(240,237,232,0.75);
-      margin-bottom: 48px;
-    }
-    .manifesto-stats {
-      display: flex;
-      gap: 0;
-      border-top: 1px solid var(--border);
-      padding-top: 32px;
-    }
-    .stat {
-      flex: 1;
-      padding-right: 24px;
-    }
-    .stat:not(:first-child) { padding-left: 24px; border-left: 1px solid var(--border); }
-    .stat-value {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 28px;
-      color: var(--gold);
-      letter-spacing: 1px;
-      display: block;
-      margin-bottom: 4px;
-    }
-    .stat-label {
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    /* ===========================
-       TESTIMONIALS
-    =========================== */
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-top: 60px;
-    }
-    .testimonial-card {
-      background: var(--charcoal);
-      border: 1px solid var(--border);
-      padding: 36px 32px 32px;
-      position: relative;
-      transition: border-color 0.3s;
-    }
-    .testimonial-card:hover { border-color: rgba(201,168,76,0.3); }
-    .quote-mark {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 80px;
-      color: var(--gold);
-      line-height: 0.8;
-      margin-bottom: 16px;
-      display: block;
-      opacity: 0.5;
-    }
-    .testimonial-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 17px;
-      line-height: 1.65;
-      color: rgba(240,237,232,0.85);
-      margin-bottom: 24px;
-      font-style: italic;
-    }
-    .testimonial-author {
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--gold);
-    }
-
-    /* ===========================
-       FOOTER
-    =========================== */
-    footer {
-      background: var(--bg);
-      border-top: 1px solid var(--border);
-      padding: 64px 48px 32px;
-    }
-    .footer-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 64px;
-    }
-    .footer-top img { height: 40px; object-fit: contain; }
-    .footer-brand-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 48px;
-      letter-spacing: 6px;
-      color: var(--text);
-    }
-    .footer-socials { display: flex; gap: 20px; align-items: center; }
-    .footer-socials a {
-      color: var(--muted);
-      transition: color 0.2s;
-      cursor: none;
-    }
-    .footer-socials a:hover { color: var(--gold); }
-    .footer-socials svg { width: 20px; height: 20px; display: block; }
-
-    .footer-middle {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-      margin-bottom: 48px;
-    }
-    .footer-col-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 16px;
-      letter-spacing: 3px;
-      color: var(--text);
-      margin-bottom: 20px;
-    }
-    .footer-col ul { list-style: none; }
-    .footer-col ul li { margin-bottom: 10px; }
-    .footer-col ul li a {
-      font-size: 13px;
-      color: var(--muted);
-      text-decoration: none;
-      cursor: none;
-      transition: color 0.2s;
-      letter-spacing: 0.5px;
-    }
-    .footer-col ul li a:hover { color: var(--gold); }
-    .footer-follow-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 15px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-    .footer-handle {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 20px;
-      color: var(--gold);
-      letter-spacing: 2px;
-      display: block;
-      margin-top: 8px;
-    }
-
-    .footer-bottom {
-      border-top: 1px solid #C0272D;
-      padding-top: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .footer-copy {
-      font-size: 12px;
-      color: var(--muted);
-      letter-spacing: 0.5px;
-    }
-    .footer-made {
-      font-size: 12px;
-      color: var(--muted);
-      letter-spacing: 0.5px;
-    }
-
-    /* ===========================
-       CART DRAWER
-    =========================== */
-    .cart-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      z-index: 1100;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.35s ease;
-      backdrop-filter: blur(2px);
-    }
-    .cart-overlay.open { opacity: 1; pointer-events: all; }
-
-    .cart-drawer {
-      position: fixed;
-      top: 0; right: 0;
-      width: 380px;
-      max-width: 100vw;
-      height: 100%;
-      background: var(--charcoal);
-      z-index: 1200;
-      display: flex;
-      flex-direction: column;
-      transform: translateX(100%);
-      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
-      border-left: 1px solid var(--border);
-    }
-    .cart-drawer.open { transform: translateX(0); }
-
-    .cart-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 28px 24px 20px;
-      border-bottom: 1px solid var(--border);
-    }
-    .cart-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 24px;
-      letter-spacing: 3px;
-    }
-    .cart-close {
-      background: none;
-      border: none;
-      color: var(--text);
-      cursor: none;
-      font-size: 20px;
-      line-height: 1;
-      width: 32px; height: 32px;
-      display: flex; align-items: center; justify-content: center;
-      transition: color 0.2s;
-    }
-    .cart-close:hover { color: var(--gold); }
-
-    .cart-items {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px 24px;
-    }
-    .cart-item {
-      display: flex;
-      gap: 16px;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .cart-item img {
-      width: 72px; height: 88px;
-      object-fit: cover;
-      flex-shrink: 0;
-    }
-    .cart-item-info { flex: 1; }
-    .cart-item-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
-    .cart-item-price {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 18px;
-      color: var(--gold);
-      letter-spacing: 1px;
-      margin-bottom: 12px;
-    }
-    .cart-item-controls {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .qty-btn {
-      width: 28px; height: 28px;
-      background: rgba(240,237,232,0.08);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 16px;
-      cursor: none;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s, color 0.2s;
-    }
-    .qty-btn:hover { background: var(--gold); color: #0A0A0A; }
-    .qty-val { font-size: 14px; min-width: 20px; text-align: center; }
-    .remove-btn {
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 11px;
-      letter-spacing: 1px;
-      cursor: none;
-      margin-left: auto;
-      transition: color 0.2s;
-    }
-    .remove-btn:hover { color: #e05252; }
-
-    .cart-empty {
-      text-align: center;
-      padding: 60px 24px;
-      color: var(--muted);
-    }
-    .cart-empty-icon { font-size: 40px; margin-bottom: 16px; }
-    .cart-empty p { font-size: 14px; }
-
-    .cart-footer {
-      padding: 20px 24px 28px;
-      border-top: 1px solid var(--border);
-    }
-    .cart-subtotal {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .cart-subtotal span:first-child {
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .cart-subtotal-price {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 24px;
-      color: var(--gold);
-      letter-spacing: 1px;
-    }
-    .checkout-btn {
-      display: block;
-      width: 100%;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 15px;
-      letter-spacing: 3px;
-      background: var(--gold);
-      color: #0A0A0A;
-      border: none;
-      padding: 18px;
-      cursor: none;
-      transition: background 0.25s;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .checkout-btn:hover { background: #d42e35; }
-
-    /* Ripple */
-    .ripple {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.3);
-      animation: rippleAnim 0.6s linear;
-      pointer-events: none;
-    }
-    @keyframes rippleAnim {
-      from { transform: scale(0); opacity: 1; }
-      to { transform: scale(4); opacity: 0; }
-    }
-
-    /* ===========================
-       RESPONSIVE
-    =========================== */
-    @media (max-width: 1024px) {
-      .drop-grid {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto;
-      }
-      .drop-card-large { grid-column: 1 / 3; grid-row: 1; }
-      .drop-card-large .product-img-wrap { height: 380px; }
-      .drop-card-med { grid-column: 1; grid-row: 2; }
-      .drop-card-med .product-img-wrap { height: 240px; }
-      .drop-card-med2 { grid-column: 2; grid-row: 2; }
-      .drop-card-med2 .product-img-wrap { height: 240px; }
-      .drop-card-wide { grid-column: 1 / 3; grid-row: 3; flex-direction: row; }
-      .drop-card-wide .product-img-wrap { height: 200px; }
-      #catalog .pieces-grid { grid-template-columns: repeat(2, 1fr); }
-      .manifesto { grid-template-columns: 1fr; }
-      .manifesto-left { padding: 60px 48px; border-right: none; border-bottom: 1px solid var(--border); }
-      .manifesto-right { padding: 60px 48px; }
-      .testimonials-grid { grid-template-columns: 1fr 1fr; }
-      .footer-middle { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 768px) {
-      nav { padding: 0 24px; }
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
-      section { padding: 70px 24px; }
-      .hero { padding: 0 24px; flex-direction: column; justify-content: flex-end; padding-bottom: 80px; }
-      .hero-left { width: 100%; padding-right: 0; }
-      .hero-right { position: static; width: 100%; height: 300px; opacity: 1; animation: none; order: -1; padding-top: 90px; }
-      .hero-img-stack { width: 100%; height: 260px; }
-      .hero-img-1 { width: 55%; height: 220px; }
-      .hero-img-2 { width: 45%; height: 180px; }
-      .hero-ctas { flex-direction: column; }
-      .btn-gold, .btn-ghost { text-align: center; width: 100%; padding: 16px; }
-      .drop-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
-      .drop-card-large, .drop-card-med, .drop-card-med2, .drop-card-wide { grid-column: 1; grid-row: auto; }
-      .drop-card-large .product-img-wrap { height: 300px; }
-      .drop-card-wide { flex-direction: column; }
-      .drop-card-wide .product-img-wrap { width: 100%; height: 200px; }
-      #catalog .pieces-grid { grid-template-columns: 1fr; }
-      #catalog .product-img-wrap { height: 280px; }
-      .manifesto { padding: 60px 0; }
-      .manifesto-left { padding: 40px 24px; }
-      .manifesto-right { padding: 40px 24px; }
-      .testimonials-grid { grid-template-columns: 1fr; }
-      .footer-top { flex-direction: column; gap: 20px; text-align: center; }
-      .footer-middle { grid-template-columns: 1fr 1fr; gap: 24px; }
-      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
-      .cart-drawer { width: 100%; }
-    }
-  </style>
+/* ─── RESPONSIVE ─── */
+@media(max-width:1100px){
+  .drop-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .dc-hero{grid-column:1/3;grid-row:1}.dc-hero .pcard-img{height:440px}
+  .dc-tr{grid-column:1;grid-row:2}.dc-tr .pcard-img{height:280px}
+  .dc-tfr{grid-column:2;grid-row:2}.dc-tfr .pcard-img{height:280px}
+  .dc-br{grid-column:1/3;grid-row:3;flex-direction:row!important}.dc-br .pcard-img{height:220px}
+  .pieces-grid{grid-template-columns:repeat(2,1fr)}.pieces-grid .pcard-img{height:320px}
+  #manifesto{grid-template-columns:1fr}
+  .man-l{border-right:none;border-bottom:1px solid var(--border)}
+  .tgrid{grid-template-columns:repeat(2,1fr)}
+  .footer-mid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .nav{padding:0 24px}.nav-links{display:none}.hbg{display:flex}
+  .sec{padding:72px 24px}
+  .hero-content{padding:0 24px 64px}
+  .scroll-cue{right:24px;bottom:24px}
+  .drop-grid{grid-template-columns:1fr;grid-template-rows:auto}
+  .dc-hero,.dc-tr,.dc-tfr,.dc-br{grid-column:1;grid-row:auto}
+  .dc-hero .pcard-img{height:360px}
+  .dc-tr .pcard-img,.dc-tfr .pcard-img{height:260px}
+  .dc-br{flex-direction:column!important}.dc-br .pcard-img{width:100%;height:220px}
+  .pieces-grid{grid-template-columns:1fr}.pieces-grid .pcard-img{height:300px}
+  .man-l,.man-r{padding:72px 24px}
+  .man-stats{grid-template-columns:1fr}
+  .m-stat{border-left:none!important;padding:0 0 20px;border-bottom:1px solid var(--border);margin-bottom:20px}
+  .tgrid{grid-template-columns:1fr}
+  .hero-ctas{flex-direction:column}
+  .btn-primary,.btn-outline{width:100%;text-align:center;padding:16px}
+  .footer-top{grid-template-columns:1fr;gap:24px;text-align:center;padding:40px 24px 32px}
+  .f-socials{justify-content:center}
+  .footer-mid{grid-template-columns:1fr 1fr;padding:40px 24px}
+  .footer-bot{flex-direction:column;gap:8px;padding:18px 24px;text-align:center}
+  .cart{width:100%}
+}
+</style>
 </head>
 <body>
 
-  <!-- Grain overlay -->
-  <div class="grain" aria-hidden="true"></div>
+<div id="cur"></div>
 
-  <!-- Custom cursor -->
-  <div id="cursor" aria-hidden="true"></div>
+<!-- MOBILE NAV -->
+<div class="mob-nav" id="mobNav">
+  <a href="#drop" class="ml">NEW DROP</a>
+  <div class="mob-div"></div>
+  <a href="#catalog" class="ml">COLLECTIONS</a>
+  <div class="mob-div"></div>
+  <a href="#manifesto" class="ml">ABOUT</a>
+</div>
 
-  <!-- ===== MOBILE NAV ===== -->
-  <div class="mobile-nav" id="mobileNav" role="dialog" aria-modal="true" aria-label="Navigation menu">
-    <a href="#drop" class="mobile-link">NEW DROP</a>
-    <a href="#catalog" class="mobile-link">COLLECTIONS</a>
-    <a href="#manifesto" class="mobile-link">ABOUT</a>
+<!-- NAVBAR -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo"><img src="https://okami1-tech.github.io/URBANBOY/logo.jpg" alt="URBANBOY"/></a>
+  <ul class="nav-links">
+    <li><a href="#drop">NEW DROP</a></li>
+    <li><a href="#catalog">COLLECTIONS</a></li>
+    <li><a href="#manifesto">ABOUT</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-cart" id="cartBtn" aria-label="Cart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      <span class="cart-dot" id="cartDot"></span>
+    </button>
+    <button class="hbg" id="hbg" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
+</nav>
 
-  <!-- ===== NAVBAR ===== -->
-  <nav id="navbar">
-    <a href="#" class="nav-logo"><img src="https://okami1-tech.github.io/URBANBOY/logo.jpg" alt="URBANBOY" /></a>
-    <ul class="nav-links" role="list">
-      <li><a href="#drop">NEW DROP</a></li>
-      <li><a href="#catalog">COLLECTIONS</a></li>
-      <li><a href="#manifesto">ABOUT</a></li>
-    </ul>
-    <div class="nav-right">
-      <button class="cart-btn" id="cartToggle" aria-label="Open cart">
+<!-- HERO — full viewport with product3 as background image -->
+<section class="hero" id="home">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-veil"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">SS 2026 Collection</p>
+    <h1 class="hero-h1">
+      <span class="h1-solid">BUILT</span>
+      <span class="h1-stroke">DIFFERENT.</span>
+    </h1>
+    <p class="hero-sub">Premium streetwear crafted for those who refuse to blend in.</p>
+    <div class="hero-ctas">
+      <button class="btn-primary" id="heroCta1">SHOP THE DROP</button>
+      <button class="btn-outline" id="heroCta2">OUR STORY</button>
+    </div>
+  </div>
+  <div class="scroll-cue">
+    <span class="scroll-cue-lbl">SCROLL</span>
+    <div class="scroll-cue-line"></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-text">LUXURY STREETWEAR &nbsp;✦&nbsp; LIMITED EDITION &nbsp;✦&nbsp; MADE DIFFERENT &nbsp;✦&nbsp; FREE SHIPPING ABOVE ₦50,000 &nbsp;✦&nbsp; EXCLUSIVE DROPS &nbsp;✦&nbsp; BUILT IN NIGERIA &nbsp;✦&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker-text">LUXURY STREETWEAR &nbsp;✦&nbsp; LIMITED EDITION &nbsp;✦&nbsp; MADE DIFFERENT &nbsp;✦&nbsp; FREE SHIPPING ABOVE ₦50,000 &nbsp;✦&nbsp; EXCLUSIVE DROPS &nbsp;✦&nbsp; BUILT IN NIGERIA &nbsp;✦&nbsp;&nbsp;&nbsp;&nbsp;</span>
+  </div>
+</div>
+
+<!-- THE DROP -->
+<section class="sec" id="drop">
+  <div class="sec-head">
+    <h2 class="sec-title">THE DROP</h2>
+    <span class="sec-num">01 / 06</span>
+  </div>
+  <div class="red-bar"></div>
+  <p class="sec-sub">Limited edition. Once it's gone, it's gone.</p>
+  <div class="drop-grid">
+
+    <!-- HERO card — large, col1, rows 1+2 -->
+    <div class="pcard dc-hero" data-pid="3">
+      <div class="pcard-img">
+        <span class="lim-badge">MOST COVETED</span>
+        <img src="https://okami1-tech.github.io/URBANBOY/product3.jpg" alt="Two Piece" loading="lazy"/>
+        <div class="pcard-ov"><button class="qa-btn" data-pid="3">QUICK ADD</button></div>
+      </div>
+      <div class="pcard-body">
+        <span class="pcard-name">Two Piece</span>
+        <p class="pcard-desc">Heavyweight two-piece set. Signature relaxed silhouette.</p>
+        <div class="pcard-foot">
+          <span class="pcard-price">₦250,000</span>
+          <button class="pcard-add" data-pid="3">ADD TO CART</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- col2, row1 -->
+    <div class="pcard dc-tr" data-pid="1">
+      <div class="pcard-img">
+        <span class="lim-badge">LIMITED</span>
+        <img src="https://okami1-tech.github.io/URBANBOY/product1.jpg" alt="Urban Hoodie" loading="lazy"/>
+        <div class="pcard-ov"><button class="qa-btn" data-pid="1">QUICK ADD</button></div>
+      </div>
+      <div class="pcard-body">
+        <span class="pcard-name">Urban Hoodie</span>
+        <p class="pcard-desc">Oversized fit. Brushed fleece interior.</p>
+        <div class="pcard-foot">
+          <span class="pcard-price">₦45,000</span>
+          <button class="pcard-add" data-pid="1">ADD TO CART</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- col3, row1 -->
+    <div class="pcard dc-tfr" data-pid="2">
+      <div class="pcard-img">
+        <span class="lim-badge">LIMITED</span>
+        <img src="https://okami1-tech.github.io/URBANBOY/product2.jpg" alt="Shoe" loading="lazy"/>
+        <div class="pcard-ov"><button class="qa-btn" data-pid="2">QUICK ADD</button></div>
+      </div>
+      <div class="pcard-body">
+        <span class="pcard-name">Shoe</span>
+        <p class="pcard-desc">Handcrafted premium leather upper.</p>
+        <div class="pcard-foot">
+          <span class="pcard-price">₦165,000</span>
+          <button class="pcard-add" data-pid="2">ADD TO CART</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- col2+3, row2 — horizontal wide card -->
+    <div class="pcard dc-br" data-pid="4">
+      <div class="pcard-img">
+        <span class="lim-badge">LIMITED</span>
+        <img src="https://okami1-tech.github.io/URBANBOY/product4.jpg" alt="Jacket" loading="lazy"/>
+        <div class="pcard-ov"><button class="qa-btn" data-pid="4">QUICK ADD</button></div>
+      </div>
+      <div class="pcard-body">
+        <span class="pcard-name">Jacket</span>
+        <p class="pcard-desc">Structured silhouette. Premium outer shell. The statement outerwear of the season.</p>
+        <div class="pcard-foot">
+          <span class="pcard-price">₦40,000</span>
+          <button class="pcard-add" data-pid="4">ADD TO CART</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ALL PIECES -->
+<section class="sec" id="catalog">
+  <div class="sec-head">
+    <h2 class="sec-title">ALL PIECES</h2>
+    <span class="sec-num">02 / 06</span>
+  </div>
+  <div class="red-bar"></div>
+  <p class="sec-sub">The full collection. Worn by the bold.</p>
+  <div class="pieces-grid">
+
+    <div class="pcard" data-pid="5">
+      <div class="pcard-img">
+        <img src="https://okami1-tech.github.io/URBANBOY/product5.jpg" alt="Urban Pants" loading="lazy"/>
+        <div class="pcard-ov"><button class="qa-btn" data-pid="5">QUICK ADD</button></div>
+      </div>
+      <div class="pcard-body">
+        <span class="pcard-name">Urban Pants</span>
+        <p class="pcard-desc">Wide-leg cut. Cargo-influenced detailing.</p>
+        <div class="pcard-foot">
+          <span class="pcard-price">₦35,000</span>
+          <button class="pcard-add" data-pid="5">ADD TO CART</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard" data-pid="6">
+      <div class="pcard-img">
+        <img src="https://okami1-tech.github.io/URBANBOY/product6.jpg" alt="Urban Sneakers" loading="lazy"/>
+        <div class="pcard-ov"><button class="qa-btn" data-pid="6">QUICK ADD</button></div>
+      </div>
+      <div class="pcard-body">
+        <span class="pcard-name">Urban Sneakers</span>
+        <p class="pcard-desc">Chunky sole. Vulcanized construction.</p>
+        <div class="pcard-foot">
+          <span class="pcard-price">₦55,000</span>
+          <button class="pcard-add" data-pid="6">ADD TO CART</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard" data-pid="1">
+      <div class="pcard-img">
+        <img src="https://okami1-tech.github.io/URBANBOY/product1.jpg" alt="Urban Hoodie" loading="lazy"/>
+        <div class="pcard-ov"><button class="qa-btn" data-pid="1">QUICK ADD</button></div>
+      </div>
+      <div class="pcard-body">
+        <span class="pcard-name">Urban Hoodie</span>
+        <p class="pcard-desc">Brushed fleece. Dropped shoulders.</p>
+        <div class="pcard-foot">
+          <span class="pcard-price">₦45,000</span>
+          <button class="pcard-add" data-pid="1">ADD TO CART</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<div id="manifesto">
+  <div class="man-l">
+    <p class="man-quote">NOT<br>CLOTHING.<br>IDENTITY.</p>
+    <span class="man-accent">— The URBANBOY Manifesto</span>
+  </div>
+  <div class="man-r">
+    <p class="man-body">URBANBOY is crafted for the individual who refuses to blend in. Each piece is a statement, not a trend. We create for the bold, the different — the ones who understand that true style is set, never followed. Rooted in Lagos. Worn by the world.</p>
+    <div class="man-stats">
+      <div class="m-stat"><span class="m-stat-val">6</span><span class="m-stat-lbl">Pieces This Drop</span></div>
+      <div class="m-stat"><span class="m-stat-val">LTD</span><span class="m-stat-lbl">Runs Only</span></div>
+      <div class="m-stat"><span class="m-stat-val">NG</span><span class="m-stat-lbl">Ships Nationwide</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="sec" id="testimonials">
+  <div class="sec-head">
+    <h2 class="sec-title">THEY WORE IT FIRST</h2>
+    <span class="sec-num">03 / 06</span>
+  </div>
+  <div class="red-bar"></div>
+  <div class="tgrid">
+    <div class="tcard">
+      <span class="tcard-qm">"</span>
+      <p class="tcard-text">The quality is unmatched. This isn't just clothing, it's a statement.</p>
+      <span class="tcard-by">— James O.</span>
+    </div>
+    <div class="tcard">
+      <span class="tcard-qm">"</span>
+      <p class="tcard-text">I've worn many streetwear brands, but URBANBOY stands out. The fit is perfect.</p>
+      <span class="tcard-by">— Sarah M.</span>
+    </div>
+    <div class="tcard">
+      <span class="tcard-qm">"</span>
+      <p class="tcard-text">Exclusivity at its finest. When I wear URBANBOY, I know I'm part of something different.</p>
+      <span class="tcard-by">— Mike T.</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="f-logo"><img src="https://okami1-tech.github.io/URBANBOY/logo.jpg" alt="URBANBOY"/></div>
+    <div class="f-wordmark">URBANBOY</div>
+    <div class="f-socials">
+      <a href="#" aria-label="Instagram">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <path d="M16 10a4 4 0 01-8 0"/>
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r=".5" fill="currentColor" stroke="none"/>
         </svg>
-        <span class="cart-badge" id="cartBadge" aria-live="polite"></span>
-      </button>
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </nav>
-
-  <!-- ===== HERO ===== -->
-  <section class="hero" id="hero">
-    <div class="hero-left">
-      <p class="hero-label">SS 2026 Collection</p>
-      <h1 class="hero-h1 solid">BUILT<br>DIFFERENT.</h1>
-      <h1 class="hero-h1 outlined">WORN<br>DIFFERENT.</h1>
-      <p class="hero-body">Premium streetwear crafted for those who refuse to blend in.</p>
-      <div class="hero-ctas">
-        <button class="btn-gold" onclick="document.getElementById('drop').scrollIntoView({behavior:'smooth'})">SHOP THE DROP</button>
-        <button class="btn-ghost" onclick="document.getElementById('manifesto').scrollIntoView({behavior:'smooth'})">VIEW LOOKBOOK</button>
-      </div>
-    </div>
-    <div class="hero-right">
-      <div class="hero-img-stack">
-        <span class="hero-img-badge">SS 2026</span>
-        <img class="hero-img-1" src="https://okami1-tech.github.io/URBANBOY/product1.jpg" alt="Urban Hoodie" />
-        <img class="hero-img-2" src="https://okami1-tech.github.io/URBANBOY/product2.jpg" alt="Shoe" />
-      </div>
-    </div>
-    <div class="scroll-indicator" aria-hidden="true">
-      <span>Scroll</span>
-      <div class="scroll-arrow"></div>
-    </div>
-  </section>
-
-  <!-- ===== MARQUEE ===== -->
-  <div class="marquee-section" aria-hidden="true">
-    <div class="marquee-track">
-      <span class="marquee-text">LUXURY STREETWEAR&nbsp;&nbsp;✦&nbsp;&nbsp;LIMITED EDITION&nbsp;&nbsp;✦&nbsp;&nbsp;MADE DIFFERENT&nbsp;&nbsp;✦&nbsp;&nbsp;FREE SHIPPING ABOVE ₦50,000&nbsp;&nbsp;✦&nbsp;&nbsp;EXCLUSIVE DROPS&nbsp;&nbsp;✦&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-      <span class="marquee-text">LUXURY STREETWEAR&nbsp;&nbsp;✦&nbsp;&nbsp;LIMITED EDITION&nbsp;&nbsp;✦&nbsp;&nbsp;MADE DIFFERENT&nbsp;&nbsp;✦&nbsp;&nbsp;FREE SHIPPING ABOVE ₦50,000&nbsp;&nbsp;✦&nbsp;&nbsp;EXCLUSIVE DROPS&nbsp;&nbsp;✦&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      </a>
+      <a href="#" aria-label="X / Twitter">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.77 0 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 000 12.68 6.34 6.34 0 006.33-6.34V8.69a8.2 8.2 0 004.79 1.52V6.76a4.85 4.85 0 01-1.02-.07z"/>
+        </svg>
+      </a>
     </div>
   </div>
-
-  <!-- ===== THE DROP ===== -->
-  <section id="drop">
-    <h2 class="section-heading">THE DROP</h2>
-    <div class="gold-rule"></div>
-    <p class="section-sub">Limited edition. Once it's gone, it's gone.</p>
-
-    <div class="drop-grid">
-      <!-- Large card: Two Piece -->
-      <div class="product-card drop-card-large" data-id="3" data-name="Two Piece" data-price="250000" data-img="https://okami1-tech.github.io/URBANBOY/product3.jpg">
-        <div class="product-img-wrap">
-          <span class="limited-badge">LIMITED</span>
-          <img src="https://okami1-tech.github.io/URBANBOY/product3.jpg" alt="Two Piece" loading="lazy"/>
-          <div class="product-overlay">
-            <button class="quick-add" data-id="3">QUICK ADD</button>
-          </div>
-        </div>
-        <div class="product-info">
-          <span class="product-name">Two Piece</span>
-          <p class="product-desc">MOST COVETED · Signature relaxed silhouette, heavyweight fabric</p>
-          <span class="product-price">₦250,000</span>
-          <button class="add-to-cart-link" data-id="3">ADD TO CART</button>
-        </div>
-      </div>
-
-      <!-- Medium card: Urban Hoodie -->
-      <div class="product-card drop-card-med" data-id="1" data-name="Urban Hoodie" data-price="45000" data-img="https://okami1-tech.github.io/URBANBOY/product1.jpg">
-        <div class="product-img-wrap">
-          <span class="limited-badge">LIMITED</span>
-          <img src="https://okami1-tech.github.io/URBANBOY/product1.jpg" alt="Urban Hoodie" loading="lazy"/>
-          <div class="product-overlay">
-            <button class="quick-add" data-id="1">QUICK ADD</button>
-          </div>
-        </div>
-        <div class="product-info">
-          <span class="product-name">Urban Hoodie</span>
-          <p class="product-desc">Oversized fit, brushed fleece interior</p>
-          <span class="product-price">₦45,000</span>
-          <button class="add-to-cart-link" data-id="1">ADD TO CART</button>
-        </div>
-      </div>
-
-      <!-- Medium card: Shoe -->
-      <div class="product-card drop-card-med2" data-id="2" data-name="Shoe" data-price="165000" data-img="https://okami1-tech.github.io/URBANBOY/product2.jpg">
-        <div class="product-img-wrap">
-          <span class="limited-badge">LIMITED</span>
-          <img src="https://okami1-tech.github.io/URBANBOY/product2.jpg" alt="Shoe" loading="lazy"/>
-          <div class="product-overlay">
-            <button class="quick-add" data-id="2">QUICK ADD</button>
-          </div>
-        </div>
-        <div class="product-info">
-          <span class="product-name">Shoe</span>
-          <p class="product-desc">Handcrafted, premium leather upper</p>
-          <span class="product-price">₦165,000</span>
-          <button class="add-to-cart-link" data-id="2">ADD TO CART</button>
-        </div>
-      </div>
+  <div class="footer-mid">
+    <div class="fc">
+      <p class="fc-title">SHOP</p>
+      <ul>
+        <li><a href="#drop">New Arrivals</a></li>
+        <li><a href="#catalog">Best Sellers</a></li>
+        <li><a href="#catalog">Collections</a></li>
+      </ul>
     </div>
-  </section>
-
-  <!-- ===== ALL PIECES ===== -->
-  <section id="catalog">
-    <h2 class="section-heading">ALL PIECES</h2>
-    <div class="gold-rule"></div>
-    <div class="pieces-grid">
-
-      <div class="product-card" data-id="4" data-name="Jacket" data-price="40000" data-img="https://okami1-tech.github.io/URBANBOY/product4.jpg">
-        <div class="product-img-wrap">
-          <img src="https://okami1-tech.github.io/URBANBOY/product4.jpg" alt="Jacket" loading="lazy"/>
-          <div class="product-overlay">
-            <button class="quick-add" data-id="4">QUICK ADD</button>
-          </div>
-        </div>
-        <div class="product-info">
-          <span class="product-name">Jacket</span>
-          <p class="product-desc">Structured silhouette, premium outer shell</p>
-          <span class="product-price">₦40,000</span>
-          <button class="add-to-cart-link" data-id="4">ADD TO CART</button>
-        </div>
-      </div>
-
-      <div class="product-card" data-id="5" data-name="Urban Pants" data-price="35000" data-img="https://okami1-tech.github.io/URBANBOY/product5.jpg">
-        <div class="product-img-wrap">
-          <img src="https://okami1-tech.github.io/URBANBOY/product5.jpg" alt="Urban Pants" loading="lazy"/>
-          <div class="product-overlay">
-            <button class="quick-add" data-id="5">QUICK ADD</button>
-          </div>
-        </div>
-        <div class="product-info">
-          <span class="product-name">Urban Pants</span>
-          <p class="product-desc">Wide-leg cut, cargo-influenced detailing</p>
-          <span class="product-price">₦35,000</span>
-          <button class="add-to-cart-link" data-id="5">ADD TO CART</button>
-        </div>
-      </div>
-
-      <div class="product-card" data-id="6" data-name="Urban Sneakers" data-price="55000" data-img="https://okami1-tech.github.io/URBANBOY/product6.jpg">
-        <div class="product-img-wrap">
-          <img src="https://okami1-tech.github.io/URBANBOY/product6.jpg" alt="Urban Sneakers" loading="lazy"/>
-          <div class="product-overlay">
-            <button class="quick-add" data-id="6">QUICK ADD</button>
-          </div>
-        </div>
-        <div class="product-info">
-          <span class="product-name">Urban Sneakers</span>
-          <p class="product-desc">Chunky sole, vulcanized construction</p>
-          <span class="product-price">₦55,000</span>
-          <button class="add-to-cart-link" data-id="6">ADD TO CART</button>
-        </div>
-      </div>
-
+    <div class="fc">
+      <p class="fc-title">SUPPORT</p>
+      <ul>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Shipping</a></li>
+      </ul>
     </div>
-  </section>
-
-  <!-- ===== MANIFESTO ===== -->
-  <div class="manifesto" id="manifesto">
-    <div class="manifesto-left">
-      <p class="manifesto-quote">NOT<br>CLOTHING.<br>IDENTITY.</p>
-    </div>
-    <div class="manifesto-right">
-      <p>URBANBOY is crafted for the individual who refuses to blend in. Each piece is a statement, not a trend. We create for the bold, the different, the ones who understand that true style is set — never followed.</p>
-      <div class="manifesto-stats">
-        <div class="stat">
-          <span class="stat-value">6 PIECES</span>
-          <span class="stat-label">This Drop</span>
-        </div>
-        <div class="stat">
-          <span class="stat-value">LIMITED</span>
-          <span class="stat-label">Runs Only</span>
-        </div>
-        <div class="stat">
-          <span class="stat-value">SHIPS</span>
-          <span class="stat-label">Nationwide</span>
-        </div>
-      </div>
+    <div class="fc">
+      <p class="fc-title">FOLLOW</p>
+      <p class="fc-note">Stay in the loop on drops, lookbooks, and more.</p>
+      <span class="fc-handle">@URBANBOY_NG</span>
     </div>
   </div>
-
-  <!-- ===== TESTIMONIALS ===== -->
-  <section id="testimonials">
-    <h2 class="section-heading">THEY WORE IT FIRST</h2>
-    <div class="gold-rule"></div>
-    <div class="testimonials-grid">
-      <div class="testimonial-card">
-        <span class="quote-mark">"</span>
-        <p class="testimonial-text">The quality is unmatched. This isn't just clothing, it's a statement.</p>
-        <span class="testimonial-author">— James O.</span>
-      </div>
-      <div class="testimonial-card">
-        <span class="quote-mark">"</span>
-        <p class="testimonial-text">I've worn many streetwear brands, but URBANBOY stands out. The fit is perfect.</p>
-        <span class="testimonial-author">— Sarah M.</span>
-      </div>
-      <div class="testimonial-card">
-        <span class="quote-mark">"</span>
-        <p class="testimonial-text">Exclusivity at its finest. When I wear URBANBOY, I know I'm part of something different.</p>
-        <span class="testimonial-author">— Mike T.</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== FOOTER ===== -->
-  <footer>
-    <div class="footer-top">
-      <img src="https://okami1-tech.github.io/URBANBOY/logo.jpg" alt="URBANBOY" />
-      <span class="footer-brand-name">URBANBOY</span>
-      <div class="footer-socials">
-        <!-- Instagram -->
-        <a href="#" aria-label="Instagram">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-            <circle cx="12" cy="12" r="4"/>
-            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
-          </svg>
-        </a>
-        <!-- Twitter/X -->
-        <a href="#" aria-label="X / Twitter">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-          </svg>
-        </a>
-        <!-- TikTok -->
-        <a href="#" aria-label="TikTok">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.2 8.2 0 004.79 1.52V6.76a4.85 4.85 0 01-1.02-.07z"/>
-          </svg>
-        </a>
-      </div>
-    </div>
-
-    <div class="footer-middle">
-      <div class="footer-col">
-        <p class="footer-col-title">SHOP</p>
-        <ul>
-          <li><a href="#drop">New Arrivals</a></li>
-          <li><a href="#catalog">Best Sellers</a></li>
-          <li><a href="#catalog">Collections</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <p class="footer-col-title">SUPPORT</p>
-        <ul>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">Returns</a></li>
-          <li><a href="#">Shipping</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <p class="footer-col-title">FOLLOW</p>
-        <p class="footer-follow-text">Stay in the loop on drops, lookbooks, and more.</p>
-        <span class="footer-handle">@URBANBOY_NG</span>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2026 URBANBOY. All rights reserved.</span>
-      <span class="footer-made">Made in Nigeria 🇳🇬</span>
-    </div>
-  </footer>
-
-  <!-- ===== CART OVERLAY + DRAWER ===== -->
-  <div class="cart-overlay" id="cartOverlay"></div>
-  <div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
-    <div class="cart-header">
-      <span class="cart-title">YOUR BAG</span>
-      <button class="cart-close" id="cartClose" aria-label="Close cart">✕</button>
-    </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-footer" id="cartFooter" style="display:none;">
-      <div class="cart-subtotal">
-        <span>SUBTOTAL</span>
-        <span class="cart-subtotal-price" id="cartSubtotal">₦0</span>
-      </div>
-      <button class="checkout-btn" id="checkoutBtn">PROCEED TO CHECKOUT</button>
-    </div>
+  <div class="footer-bot">
+    <span class="f-copy">© 2026 URBANBOY. All rights reserved.</span>
+    <span class="f-made">Made in Nigeria 🇳🇬</span>
   </div>
+</footer>
 
-  <script>
-    /* ===========================
-       CURSOR
-    =========================== */
-    const cursor = document.getElementById('cursor');
-    let cx = 0, cy = 0;
-    document.addEventListener('mousemove', e => {
-      cx = e.clientX; cy = e.clientY;
-      cursor.style.left = cx + 'px';
-      cursor.style.top = cy + 'px';
-    });
-    document.querySelectorAll('a, button, [data-id]').forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
-    });
+<!-- CART DRAWER -->
+<div class="cart-mask" id="cartMask"></div>
+<div class="cart" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Cart">
+  <div class="cart-hd">
+    <span class="cart-hd-title">YOUR BAG</span>
+    <button class="cart-x" id="cartX">✕</button>
+  </div>
+  <div class="cart-list" id="cartList"></div>
+  <div class="cart-ft" id="cartFt" style="display:none">
+    <div class="cart-sub">
+      <span class="cart-sub-lbl">Subtotal</span>
+      <span class="cart-sub-val" id="cartTotal">₦0</span>
+    </div>
+    <button class="ckout-btn" id="ckoutBtn">PROCEED TO CHECKOUT</button>
+  </div>
+</div>
 
-    /* ===========================
-       NAVBAR SCROLL
-    =========================== */
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 80);
-    }, { passive: true });
+<script>
+/* PRODUCTS */
+const P={
+  1:{id:1,name:'Urban Hoodie',  price:45000, img:'https://okami1-tech.github.io/URBANBOY/product1.jpg'},
+  2:{id:2,name:'Shoe',          price:165000,img:'https://okami1-tech.github.io/URBANBOY/product2.jpg'},
+  3:{id:3,name:'Two Piece',     price:250000,img:'https://okami1-tech.github.io/URBANBOY/product3.jpg'},
+  4:{id:4,name:'Jacket',        price:40000, img:'https://okami1-tech.github.io/URBANBOY/product4.jpg'},
+  5:{id:5,name:'Urban Pants',   price:35000, img:'https://okami1-tech.github.io/URBANBOY/product5.jpg'},
+  6:{id:6,name:'Urban Sneakers',price:55000, img:'https://okami1-tech.github.io/URBANBOY/product6.jpg'},
+};
 
-    /* ===========================
-       HAMBURGER / MOBILE NAV
-    =========================== */
-    const hamburger = document.getElementById('hamburger');
-    const mobileNav = document.getElementById('mobileNav');
-    hamburger.addEventListener('click', () => {
-      const isOpen = mobileNav.classList.toggle('open');
-      hamburger.classList.toggle('open', isOpen);
-      hamburger.setAttribute('aria-expanded', isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
-    document.querySelectorAll('.mobile-link').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileNav.classList.remove('open');
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      });
-    });
+/* CART */
+let cart={};
+try{cart=JSON.parse(localStorage.getItem('ub3')||'{}')}catch(e){}
+const save=()=>localStorage.setItem('ub3',JSON.stringify(cart));
+const fmt=n=>'₦'+n.toLocaleString('en-NG');
 
-    /* ===========================
-       CART STATE
-    =========================== */
-    const PRODUCTS = {
-      1: { id:1, name:'Urban Hoodie',   price:45000,  img:'https://okami1-tech.github.io/URBANBOY/product1.jpg' },
-      2: { id:2, name:'Shoe',           price:165000, img:'https://okami1-tech.github.io/URBANBOY/product2.jpg' },
-      3: { id:3, name:'Two Piece',      price:250000, img:'https://okami1-tech.github.io/URBANBOY/product3.jpg' },
-      4: { id:4, name:'Jacket',         price:40000,  img:'https://okami1-tech.github.io/URBANBOY/product4.jpg' },
-      5: { id:5, name:'Urban Pants',    price:35000,  img:'https://okami1-tech.github.io/URBANBOY/product5.jpg' },
-      6: { id:6, name:'Urban Sneakers', price:55000,  img:'https://okami1-tech.github.io/URBANBOY/product6.jpg' },
-    };
+function badge(){
+  const n=Object.values(cart).reduce((a,i)=>a+i.qty,0);
+  document.getElementById('cartDot').classList.toggle('on',n>0);
+}
 
-    function loadCart() {
-      try { return JSON.parse(localStorage.getItem('ub_cart') || '{}'); }
-      catch { return {}; }
-    }
-    function saveCart(cart) {
-      localStorage.setItem('ub_cart', JSON.stringify(cart));
-    }
+function renderCart(){
+  const list=document.getElementById('cartList');
+  const ft=document.getElementById('cartFt');
+  const tot=document.getElementById('cartTotal');
+  const items=Object.values(cart);
+  if(!items.length){
+    list.innerHTML='<div class="cart-empty"><div style="font-size:36px">🛍</div><p>Your bag is empty.</p></div>';
+    ft.style.display='none';return;
+  }
+  let html='',sub=0;
+  items.forEach(it=>{
+    sub+=it.price*it.qty;
+    html+=`<div class="citem">
+      <img src="${it.img}" alt="${it.name}" loading="lazy"/>
+      <div class="citem-info">
+        <div class="citem-name">${it.name}</div>
+        <div class="citem-price">${fmt(it.price)}</div>
+        <div class="citem-ctrl">
+          <button class="qty-btn" data-a="dec" data-id="${it.id}">−</button>
+          <span class="qty-n">${it.qty}</span>
+          <button class="qty-btn" data-a="inc" data-id="${it.id}">+</button>
+          <button class="rm-btn" data-a="rm" data-id="${it.id}">REMOVE</button>
+        </div>
+      </div>
+    </div>`;
+  });
+  list.innerHTML=html;
+  tot.textContent=fmt(sub);
+  ft.style.display='';
+}
 
-    let cart = loadCart();
+function addItem(id){
+  id=String(id);if(!P[id])return;
+  cart[id]?cart[id].qty++:(cart[id]={...P[id],qty:1});
+  save();badge();renderCart();openCart();
+}
 
-    function formatPrice(n) {
-      return '₦' + n.toLocaleString('en-NG');
-    }
+document.getElementById('cartList').addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;
+  const id=b.dataset.id,a=b.dataset.a;if(!cart[id])return;
+  if(a==='inc')cart[id].qty++;
+  else if(a==='dec'){cart[id].qty--;if(cart[id].qty<=0)delete cart[id];}
+  else if(a==='rm')delete cart[id];
+  save();badge();renderCart();
+});
 
-    function updateBadge() {
-      const total = Object.values(cart).reduce((s,i) => s + i.qty, 0);
-      const badge = document.getElementById('cartBadge');
-      badge.classList.toggle('visible', total > 0);
-    }
+function openCart(){
+  document.getElementById('cartDrawer').classList.add('on');
+  document.getElementById('cartMask').classList.add('on');
+  document.body.style.overflow='hidden';renderCart();
+}
+function closeCart(){
+  document.getElementById('cartDrawer').classList.remove('on');
+  document.getElementById('cartMask').classList.remove('on');
+  document.body.style.overflow='';
+}
+document.getElementById('cartBtn').addEventListener('click',openCart);
+document.getElementById('cartX').addEventListener('click',closeCart);
+document.getElementById('cartMask').addEventListener('click',closeCart);
 
-    function renderCart() {
-      const itemsEl = document.getElementById('cartItems');
-      const footerEl = document.getElementById('cartFooter');
-      const subtotalEl = document.getElementById('cartSubtotal');
-      const entries = Object.values(cart);
+/* ADD TO CART — delegated */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.qa-btn,.pcard-add');
+  if(!b||!b.dataset.pid)return;
+  ripple(b,e);addItem(b.dataset.pid);
+});
 
-      if (entries.length === 0) {
-        itemsEl.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🛍</div><p>Your bag is empty.</p></div>`;
-        footerEl.style.display = 'none';
-        return;
-      }
+/* RIPPLE */
+function ripple(el,e){
+  const r=el.getBoundingClientRect(),s=Math.max(r.width,r.height);
+  const sp=document.createElement('span');
+  sp.className='ripple';
+  sp.style.cssText=`width:${s}px;height:${s}px;left:${e.clientX-r.left-s/2}px;top:${e.clientY-r.top-s/2}px`;
+  el.appendChild(sp);setTimeout(()=>sp.remove(),700);
+}
 
-      let html = '';
-      let subtotal = 0;
-      entries.forEach(item => {
-        subtotal += item.price * item.qty;
-        html += `
-          <div class="cart-item" data-id="${item.id}">
-            <img src="${item.img}" alt="${item.name}" />
-            <div class="cart-item-info">
-              <div class="cart-item-name">${item.name}</div>
-              <div class="cart-item-price">${formatPrice(item.price)}</div>
-              <div class="cart-item-controls">
-                <button class="qty-btn" data-action="dec" data-id="${item.id}" aria-label="Decrease">−</button>
-                <span class="qty-val">${item.qty}</span>
-                <button class="qty-btn" data-action="inc" data-id="${item.id}" aria-label="Increase">+</button>
-                <button class="remove-btn" data-action="remove" data-id="${item.id}">REMOVE</button>
-              </div>
-            </div>
-          </div>`;
-      });
-      itemsEl.innerHTML = html;
-      subtotalEl.textContent = formatPrice(subtotal);
-      footerEl.style.display = '';
-    }
+document.getElementById('ckoutBtn').addEventListener('click',e=>{
+  ripple(e.currentTarget,e);setTimeout(()=>alert('Checkout coming soon!'),220);
+});
 
-    function addToCart(id) {
-      id = String(id);
-      const p = PRODUCTS[id];
-      if (!p) return;
-      if (cart[id]) cart[id].qty++;
-      else cart[id] = { ...p, qty: 1 };
-      saveCart(cart);
-      updateBadge();
-      renderCart();
-      openCart();
-    }
+/* NAVBAR */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>80),{passive:true});
 
-    // Cart controls delegation
-    document.getElementById('cartItems').addEventListener('click', e => {
-      const btn = e.target.closest('[data-action]');
-      if (!btn) return;
-      const id = btn.dataset.id;
-      const action = btn.dataset.action;
-      if (!cart[id]) return;
-      if (action === 'inc') { cart[id].qty++; }
-      else if (action === 'dec') {
-        cart[id].qty--;
-        if (cart[id].qty <= 0) delete cart[id];
-      } else if (action === 'remove') {
-        delete cart[id];
-      }
-      saveCart(cart);
-      updateBadge();
-      renderCart();
-    });
+/* HAMBURGER */
+const hbg=document.getElementById('hbg'),mob=document.getElementById('mobNav');
+hbg.addEventListener('click',()=>{
+  const on=mob.classList.toggle('on');
+  hbg.classList.toggle('on',on);
+  document.body.style.overflow=on?'hidden':'';
+});
+document.querySelectorAll('.ml').forEach(l=>l.addEventListener('click',()=>{
+  mob.classList.remove('on');hbg.classList.remove('on');document.body.style.overflow='';
+}));
 
-    /* ===========================
-       CART OPEN / CLOSE
-    =========================== */
-    function openCart() {
-      document.getElementById('cartDrawer').classList.add('open');
-      document.getElementById('cartOverlay').classList.add('open');
-      document.body.style.overflow = 'hidden';
-      renderCart();
-    }
-    function closeCart() {
-      document.getElementById('cartDrawer').classList.remove('open');
-      document.getElementById('cartOverlay').classList.remove('open');
-      document.body.style.overflow = '';
-    }
+/* CURSOR */
+const cur=document.getElementById('cur');
+document.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+},{passive:true});
+document.querySelectorAll('a,button,.pcard').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cur.classList.add('hov'));
+  el.addEventListener('mouseleave',()=>cur.classList.remove('hov'));
+});
 
-    document.getElementById('cartToggle').addEventListener('click', openCart);
-    document.getElementById('cartClose').addEventListener('click', closeCart);
-    document.getElementById('cartOverlay').addEventListener('click', closeCart);
+/* HERO CTA SCROLL */
+document.getElementById('heroCta1').addEventListener('click',()=>document.getElementById('drop').scrollIntoView({behavior:'smooth'}));
+document.getElementById('heroCta2').addEventListener('click',()=>document.getElementById('manifesto').scrollIntoView({behavior:'smooth'}));
 
-    /* ===========================
-       ADD TO CART BUTTONS
-    =========================== */
-    document.addEventListener('click', e => {
-      const btn = e.target.closest('[data-id].add-to-cart-link, [data-id].quick-add, [data-id].btn-gold');
-      if (btn && btn.dataset.id) {
-        ripple(btn, e);
-        addToCart(btn.dataset.id);
-      }
-    });
+/* HERO BG slow-zoom reveal on load */
+window.addEventListener('load',()=>{
+  requestAnimationFrame(()=>document.getElementById('heroBg').classList.add('zoomed'));
+});
 
-    /* ===========================
-       RIPPLE EFFECT
-    =========================== */
-    function ripple(el, e) {
-      const rect = el.getBoundingClientRect();
-      const r = document.createElement('span');
-      r.className = 'ripple';
-      const size = Math.max(rect.width, rect.height);
-      r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size/2}px;top:${e.clientY - rect.top - size/2}px;`;
-      el.appendChild(r);
-      setTimeout(() => r.remove(), 700);
-    }
-
-    document.getElementById('checkoutBtn').addEventListener('click', e => {
-      ripple(e.currentTarget, e);
-      setTimeout(() => alert('Checkout coming soon!'), 200);
-    });
-
-    /* ===========================
-       INIT
-    =========================== */
-    updateBadge();
-  </script>
+badge();
+</script>
 </body>
 </html>
